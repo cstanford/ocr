@@ -102,7 +102,7 @@ def getCheckSum(account_number, iterator, acc):
 
         entry = int(account_number[ACCOUNT_NUMBER_LENGTH - iterator])
         acc += entry * iterator
-        if iterator is 9:
+        if iterator is ACCOUNT_NUMBER_LENGTH:
             print('Check Sum Calculated: {}'.format(acc))
             return acc
 
@@ -148,7 +148,7 @@ def parseAccountNum(top_account_num_line, mid_account_num_line, bottom_account_n
     return account_number        
 
 
-def initiateNeitherIngeniousNorInfallibleManchine():
+def initiateNeitherIngeniousNorInfallibleMachine():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('filename', nargs='?', type=argparse.FileType('r'), default='ocr.txt')
@@ -205,5 +205,5 @@ def initiateNeitherIngeniousNorInfallibleManchine():
 
 
 
-initiateNeitherIngeniousNorInfallibleManchine()
+initiateNeitherIngeniousNorInfallibleMachine()
 
