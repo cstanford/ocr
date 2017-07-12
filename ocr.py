@@ -68,9 +68,9 @@ def mapCharToBinarySequence(char):
 '''
 ' Each account number consists of 3 lines: 
 '
-'   line1: [0,1,0,1,0,1,1,1,1]
-'   line2: [1,0,1,1,1,1,1,1,1]
-'   line3: [1,1,1,0,0,0,0,1,1]
+'   line1: [0,1,0,1,0,1,1,1,1,...,0]
+'   line2: [1,0,1,1,1,1,1,1,1,...,1]
+'   line3: [1,1,1,0,0,0,0,1,1,...,0]
 '
 '   popleft() each line three times to get the binary sequence of the corresponding entry:
 '
