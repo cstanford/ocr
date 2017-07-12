@@ -72,29 +72,31 @@ def mapCharToBinarySequence(char):
 '   line2: [1,0,1,1,1,1,1,1,1]
 '   line3: [1,1,1,0,0,0,0,1,1]
 '
-'   Deque each line three times to get the binary sequence of the corresponding entry:
+'   popleft() each line three times to get the binary sequence of the corresponding entry:
 '
-'   -> s1 = line1.popleft() += line1.popLeft() += line1.popleft() -> 0,1,0
-'   -> s2 = line2.popleft() += line2.popLeft() += line2.popleft() -> 1,0,1
-'   -> s3 = line3.popleft() += line3.popLeft() += line3.popleft() -> 1,1,1
+'   -> s0 = line1.popleft() += line1.popLeft() += line1.popleft() -> 0,1,0
+'   -> s1 = line2.popleft() += line2.popLeft() += line2.popleft() -> 1,0,1
+'   -> s2 = line3.popleft() += line3.popLeft() += line3.popleft() -> 1,1,1
 '
-'   resultSeq = s1 += s2 += s3 -> 0,1,0,1,0,1,1,1,1
+'   resultSeq = s0 += s1 += s2 -> 0,1,0,1,0,1,1,1,1
 '
 '''
 def getBinarySequenceToCorrespondingEntryByLine(account_num_line):
     try:
-        d0 = account_num_line.popleft()     # O(1)
-        d1 = account_num_line.popleft()
-        d2 = account_num_line.popleft()        
-        account_num_entry = d0 + d1 + d2
+        s0 = account_num_line.popleft()     # O(1)
+        s1 = account_num_line.popleft()
+        s2 = account_num_line.popleft()        
+        account_num_entry = s0 + s1 + s2
         return account_num_entry
     except IndexError:
         print('\nUnable to parse account number. Attempted dequeue of empty queue.\n')
         exit()
 
 
-def doCheckSum(account_number, iterator, acc):
+def getCheckSum(account_number, iterator, acc):
 
+        # account number:  3  4  5  8  8  2  8  6  5
+        # position names:  d9 d8 d7 d6 d5 d4 d3 d2 d1
         # checksum calculation:
         # (d1+2*d2+3*d3 +..+9*d9) mod 11 = 0
 
@@ -104,11 +106,11 @@ def doCheckSum(account_number, iterator, acc):
             print('Check Sum Calculated: {}'.format(acc))
             return acc
 
-        return doCheckSum(account_number, iterator + 1, acc)
+        return getCheckSum(account_number, iterator + 1, acc)
 
 
 def validateAcctNum(account_number):
-    check_sum = doCheckSum(account_number, 1, 0)
+    check_sum = getCheckSum(account_number, 1, 0)
     account_number_is_valid = check_sum % 11 is 0
     print('Account Number is Valid: {}'.format(account_number_is_valid))       
     return account_number_is_valid
@@ -122,8 +124,10 @@ def parseAccountNum(top_account_num_line, mid_account_num_line, bottom_account_n
     pprint.pprint(bottom_account_num_line.replace('\n',''))
 
     # 1. Map each account_num_line to its corresponding binary sequence.
-    # 2. Filter out any values that were not mapped successfully ('\n', '\r', ect... will be mapped to 'None').
-    # 3. Place the results of (2) in a queue.
+    # 2. Filter out any values that were not mapped successfully.
+    #       - Post mapCharToBinraySequence(), each account_num_line may contain 'None' values due to it containing entries
+    #         such as '\n', '\r', ect..., so we filter them out. 
+    # 3. Place the result of (2) in a queue.
     top_account_num_line = deque(filter(lambda char: char is not None, (mapCharToBinarySequence(char) for char in top_account_num_line)))
     mid_account_num_line = deque(filter(lambda char: char is not None, (mapCharToBinarySequence(char) for char in mid_account_num_line)))
     bottom_account_num_line = deque(filter(lambda char: char is not None, (mapCharToBinarySequence(char) for char in bottom_account_num_line)))
@@ -172,7 +176,7 @@ def initiateNeitherIngeniousNorInfallibleManchine():
             invalid_account_numbers_found.append(account_number)
         
         total_account_numbers_found += 1
-        in_file.readline() # burn line
+        in_file.readline()  # Burn the empty line seperating account numbers
 
 
     print('\n\nTotal Account Numbers Found: {}'.format(total_account_numbers_found))
@@ -185,6 +189,19 @@ def initiateNeitherIngeniousNorInfallibleManchine():
         print('{}: '.format(index + 1) + ''.join(entry))
 
     print('\n\n')
+
+    ambulance_ascii_art = '''          
+       o_______________}o{          
+       |              |   \         
+       |   Acadian    |____\_____   
+       | _____        |    |_o__ |  
+       [/ ___ \       |   / ___ \|  
+      []_/.-.\_\______|__/_/.-.\_[] 
+         |(O)|             |(O)|    
+          '-'               '-'       
+    ---   ---   ---   ---   ---   --- '''
+
+    print(ambulance_ascii_art)
 
 
 
